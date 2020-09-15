@@ -1,0 +1,2 @@
+# gocommon
+use for golang
