@@ -105,38 +105,3 @@ func Error() *zerolog.Event {
 func Fatal() *zerolog.Event {
 	return log.Fatal().Str("service", service)
 }
-
-type Zlog struct {
-}
-
-func (z *Zlog) Debugf(s string, v ...interface{}) {
-	logEvent(log.Debug(), v)
-}
-func (z *Zlog) Infof(s string, v ...interface{}) {
-	logEvent(log.Info(), &s, &v)
-}
-func (z *Zlog) Warnf(s string, v ...interface{}) {
-	logEvent(log.Warn(), &s, &v)
-}
-func (z *Zlog) Errorf(s string, v ...interface{}) {
-	logEvent(log.Error(), &s, &v)
-}
-func (z *Zlog) Fatalf(s string, v ...interface{}) {
-	logEvent(log.Fatal(), &s, &v)
-}
-
-func (z *Zlog) Debug(v ...interface{}) {
-	logEvent()
-}
-func (z *Zlog) Infof(s string, v ...interface{}) {
-	logEvent(log.Info(), &s, &v)
-}
-func (z *Zlog) Warnf(s string, v ...interface{}) {
-	logEvent(log.Warn(), &s, &v)
-}
-func (z *Zlog) Errorf(s string, v ...interface{}) {
-	logEvent(log.Error(), &s, &v)
-}
-func (z *Zlog) Fatalf(s string, v ...interface{}) {
-	logEvent(log.Fatal(), &s, &v)
-}
