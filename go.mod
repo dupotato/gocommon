@@ -1,4 +1,4 @@
-module gocommon
+module github.com/dupotato/gocommon
 
 go 1.14
 

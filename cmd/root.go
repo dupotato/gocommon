@@ -22,7 +22,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
-	logger "gocommon/dlogger/zlog"
+	logger "github.com/dupotato/gocommon/dlogger/zlog"
 )
 
 var cfgFile string

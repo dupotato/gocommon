@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"gocommon/config"
+	"github.com/dupotato/gocommon/config"
 
 	"github.com/spf13/cobra"
 )

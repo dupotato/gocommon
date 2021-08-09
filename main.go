@@ -1,7 +1,7 @@
 package main
 
 import (
-	"gocommon/cmd"
+	"github.com/dupotato/gocommon/cmd"
 )
 
 func main() {
