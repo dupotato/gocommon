@@ -5,14 +5,23 @@ import (
 )
 
 type ZapLogger struct {
-	logger logging.Logger
+	logger *logging.Logger
 }
 
 // NewZapLogger 创建封装了zap的对象，该对象是对LoggerV2接口的实现
-func NewZapLogger(logger *logging.Logger) *ZapLogger {
+func NewZapLogger() *ZapLogger {
+	l := logging.NewLogger("grpcLogger")
 	return &ZapLogger{
-		logger: *logger,
+		logger: l,
 	}
+}
+
+func (zl *ZapLogger) Debugf(format string, args ...interface{}) {
+	zl.logger.Infof(format, args...)
+}
+
+func (zl *ZapLogger) Warnf(format string, args ...interface{}) {
+	zl.logger.Warnf(format, args...)
 }
 
 // Info returns

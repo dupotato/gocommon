@@ -43,6 +43,7 @@ func StartServer() {
 	z.Info("grpc server begin")
 	grpclog.SetLoggerV2(z)
 	//创建一个grpc服务器对象
+	//这里可以增加grpc的参数 比如拦截器 安全认证等
 	gRpcServer := grpc.NewServer()
 
 	pb.RegisterHelloServiceServer(gRpcServer, &impl.HelloServiceServer{})

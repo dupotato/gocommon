@@ -1,7 +1,9 @@
 package main
 
-import "gocommon/dlogger"
+import (
+	"gocommon/cmd"
+)
 
 func main() {
-	dlogger.Infof("11")
+	cmd.Execute()
 }

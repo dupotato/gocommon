@@ -3,8 +3,8 @@ package client
 import (
 	"context"
 	"fmt"
-	"go_common/golog"
-	pb "go_common/grpc/helloworld_demo/proto"
+	"gocommon/golog"
+	pb "gocommon/grpc/helloworld_demo/proto"
 	"log"
 	"strconv"
 

@@ -22,7 +22,7 @@ func init() {
 	)
 }
 
-func InitConfig(logdev, loglev int, logfile string, maxsize, maxrotate, maxdays int) {
+func initConfig(logdev, loglev int, logfile string, maxsize, maxrotate, maxdays int) {
 	SetLevel(loglev)
 	zerolog.TimeFieldFormat = "2006-01-02 15:04:05.999"
 	zerolog.CallerSkipFrameCount = 4
@@ -104,4 +104,28 @@ func Error() *zerolog.Event {
 
 func Fatal() *zerolog.Event {
 	return log.Fatal().Str("service", service)
+}
+
+func NewZlog(logdev, loglev int, logfile string, maxsize, maxrotate, maxdays int) *Zlogger {
+	initConfig(logdev, loglev, logfile, maxsize, maxrotate, maxdays)
+	return &Zlogger{}
+}
+
+type Zlogger struct {
+}
+
+func (z *Zlogger) Debugf(s string, v ...interface{}) {
+	logEvent(log.Debug(), &s, &v)
+}
+func (z *Zlogger) Infof(s string, v ...interface{}) {
+	logEvent(log.Info(), &s, &v)
+}
+func (z *Zlogger) Warnf(s string, v ...interface{}) {
+	logEvent(log.Warn(), &s, &v)
+}
+func (z *Zlogger) Errorf(s string, v ...interface{}) {
+	logEvent(log.Error(), &s, &v)
+}
+func (z *Zlogger) Fatalf(s string, v ...interface{}) {
+	logEvent(log.Fatal(), &s, &v)
 }
