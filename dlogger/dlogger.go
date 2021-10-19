@@ -32,8 +32,8 @@ func Register(name string, logg *Logger) {
 
 func init() {
 	gLogConfig = LogConfig{
-		loglev:    0,
-		logdev:    0,
+		loglev:    1,
+		logdev:    1,
 		filename:  "common.log",
 		maxsize:   10,
 		maxrotate: 10,

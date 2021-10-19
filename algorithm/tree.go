@@ -61,3 +61,38 @@ func order(root *TreeNode, res [][]int, level int) [][]int {
 	res = order(root.Right, res, level+1)
 	return res
 }
+
+//preorderTransvel
+var res []int
+var stack []*TreeNode
+
+func preorderTransvel(root *TreeNode) []int {
+
+	for root != nil || len(stack) > 0 {
+
+		for root != nil {
+			res = append(res, root.Val)
+			stack = append(stack, root)
+			root = root.Left
+		}
+
+		if len(stack) > 0 {
+			root = stack[len(stack)-1].Right
+			stack = stack[:len(stack)-1]
+		}
+	}
+
+	return res
+}
+
+func inorderTransver(root *TreeNode) {
+	for root != nil || len(stack) > 0 {
+		for root != nil {
+			stack = append(stack, root)
+			root = root.Left
+		}
+		root = stack[len(stack)-1]
+		res = append(res, root.Val)
+		stack = stack[:len(stack)-1]
+	}
+}

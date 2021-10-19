@@ -408,3 +408,204 @@ func pcMain() {
 	go consume()
 	<-closed
 }
+
+//lru implement
+type LruNode struct {
+	Pre  *LruNode
+	Next *LruNode
+	key  string
+}
+
+type LruHead struct {
+	len      int
+	mapIndex map[string]*LruNode
+	head     *LruNode
+	tail     *LruNode
+	cap      int
+}
+
+func NewLruHead() *LruHead {
+	return &LruHead{
+		len:      0,
+		cap:      10,
+		mapIndex: make(map[string]*LruNode, 10),
+	}
+}
+
+func (l *LruHead) LruInsert(keyv string) {
+	// len==0 first insert
+	if l.len == 0 {
+		n := &LruNode{
+			Next: nil,
+			key:  keyv,
+		}
+		l.head = n
+		l.tail = n
+		l.mapIndex[keyv] = n
+		l.len++
+		return
+	}
+
+	// len<cap  Lru is not full
+	if l.len < l.cap {
+		if t, ok := l.mapIndex[keyv]; ok {
+			t.Pre.Next = t.Next
+			t.Next.Pre = t.Pre
+			l.head.Pre = t
+			t.Next = l.head
+			l.head = t
+		} else {
+			n := &LruNode{
+				Next: nil,
+				key:  keyv,
+			}
+			n.Next = l.head
+
+			l.head = n.Next
+			l.head.Pre = n
+			l.len++
+			l.mapIndex[keyv] = n
+		}
+	}
+
+	// if l.len==cap
+	// do some
+}
+
+// con web vist
+
+type Ban struct {
+	visitIPs map[string]time.Time
+	lock     sync.Mutex
+}
+
+func NewBan(ctx context.Context) *Ban {
+	o := &Ban{visitIPs: make(map[string]time.Time)}
+	go func() {
+		t := time.NewTimer(time.Minute * 1)
+		for {
+			select {
+			case <-t.C:
+				o.lock.Lock()
+				for k, v := range o.visitIPs {
+					if time.Now().Sub(v) >= time.Minute*1 {
+						delete(o.visitIPs, k)
+					}
+				}
+				o.lock.Unlock()
+				t.Reset(time.Minute * 1)
+			case <-ctx.Done():
+				return
+			}
+
+		}
+	}()
+	return o
+}
+
+func (o *Ban) visit(ip string) bool {
+	o.lock.Lock()
+	defer o.lock.Unlock()
+	if _, ok := o.visitIPs[ip]; ok {
+		return true
+	}
+	o.visitIPs[ip] = time.Now()
+	return false
+}
+
+func BanMain() {
+	var success int32
+	success = 0
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
+	ban := NewBan(ctx)
+	for i := 0; i < 1000; i++ {
+		go func() {
+			ip := fmt.Sprintf("192.168.1.%d", i)
+			if !ban.visit(ip) {
+				atomic.AddInt32(&success, 1)
+			}
+		}()
+	}
+}
+
+// fun
+func proc() {
+	panic("proc")
+}
+func runproc() {
+	go func() {
+		t := time.NewTicker(1 * time.Second)
+		for {
+			select {
+			case <-t.C:
+				go func() {
+					defer func() {
+						if err := recover(); err != nil {
+							fmt.Println(err)
+						}
+					}()
+					proc()
+				}()
+
+			}
+		}
+
+	}()
+	select {}
+}
+
+func findfromslice() {
+	timer := time.NewTimer(5 * time.Second)
+	ctx, cancel := context.WithCancel(context.Background())
+
+	findset := []int{1, 2, 3, 10, 999, 8, 345, 7, 98, 33, 66, 77, 88, 68, 96}
+	datalen := len(findset)
+	target := 999
+	size := 3
+
+	resultchan := make(chan bool)
+	for i := 0; i < datalen; i += size {
+		end := i + size
+		if end > datalen {
+			end = datalen - 1
+		}
+		go func(ctx context.Context, findset []int, i, end, target int) {
+			for i < end {
+				select {
+				case <-ctx.Done():
+					fmt.Println("canceled")
+					return
+				default:
+				}
+
+				if findset[i] == target {
+					resultchan <- true
+				}
+				i++
+			}
+		}(ctx, findset, i, end, target)
+	}
+
+	select {
+	case <-timer.C:
+		fmt.Println("timeout no find")
+		cancel()
+	case <-resultchan:
+		fmt.Println("found it")
+	}
+}
+
+// reverse string
+
+func reverse() {
+	str := "nihao你好123号"
+	runestr := []rune(str)
+	fmt.Println(runestr)
+	j := len(runestr) - 1
+	for i := 0; i < j; i, j = i+1, j-1 {
+		runestr[i], runestr[j] = runestr[j], runestr[i]
+	}
+	fmt.Println(string(runestr))
+}

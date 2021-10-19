@@ -280,6 +280,37 @@ func MergeSort(array []int) []int {
 	return merge(left, right)
 }
 
+func MergeSort1(array []int) []int {
+	length := len(array)
+
+	if length <= 1 {
+		return array
+	}
+	num := length / 2
+	left := MergeSort1(array[:num])
+	right := MergeSort1(array[num:])
+	return merge1(left, right)
+}
+
+func merge1(left, right []int) []int {
+	llen := len(left)
+	rlen := len(right)
+	var l, r int
+	var result []int
+	for l < llen && r < rlen {
+		if left[l] <= right[r] {
+			result = append(result, left[l])
+			l++
+		} else {
+			result = append(result, right[r])
+			r++
+		}
+	}
+	result = append(result, left[l:]...)
+	result = append(result, right[r:]...)
+	return result
+}
+
 /**
 二路归并排序 非递归
 */

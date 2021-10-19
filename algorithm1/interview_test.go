@@ -44,3 +44,26 @@ func Test_orderp11(t *testing.T) {
 func Test_pcMain(t *testing.T) {
 	pcMain()
 }
+
+func Test_reverse(t *testing.T) {
+	reverse()
+}
+
+func Test_a1(t *testing.T) {
+	fmt.Println(a1(3, 3))
+}
+
+func Test_pc1(t *testing.T) {
+	pc()
+}
+
+func Test_findlongcontinusstr(t *testing.T) {
+	s := "abacbaa"
+	fmt.Println(findlongcontinusstr(s))
+}
+
+func Test_find111(t *testing.T) {
+	n := "abcdefabc"
+	set := []rune{'a', 'e', 'f'}
+	fmt.Println(find111(n, set))
+}

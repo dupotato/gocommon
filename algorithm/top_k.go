@@ -67,6 +67,22 @@ func quickSort(array []int) []int {
 	return array
 }
 
+func quickSortBase(array []int) []int {
+	if len(array) <= 1 {
+		return array
+	}
+
+	mid := array[0]
+	index := 1
+	head, tail := 0, len(array)-1
+	for head < tail {
+		if array[index]>mid{
+			array[index],arr
+		}
+	}
+
+}
+
 // 选择排序查找top5
 func SelectSortTopK(array []int, top int) []int {
 	// 外层只需要循环top次，
